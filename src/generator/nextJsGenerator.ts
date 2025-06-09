@@ -10,9 +10,9 @@ import { DEFAULT_PROJECT_CONFIG } from '../config/defaults';
 
 // TODO: Define more specific types for project configuration if needed
 
-// Helper function to recursively copy a directory
-async function copyDirectoryRecursive(source: string, target: string) {
-  await ensureDirectoryExists(target);
+// Exported for testing and potentially for other generator utilities
+export async function copyDirectoryRecursive(source: string, target: string) {
+  await ensureDirectoryExists(target); // ensureDirectoryExists is imported from ../utils/file
   const entries = await fs.readdir(source, { withFileTypes: true });
 
   for (const entry of entries) {
@@ -394,20 +394,17 @@ next-env.d.ts
               let pageContent = await fs.readFile(targetPagePath, 'utf-8');
               const originalPageContent = pageContent;
 
-              // Rewrite ../../components/... to ../../components/modules/[moduleId]/...
-              const componentImportRegex = /(from\s+['"])(\.\.\/\.\.\/components\/)([^'"]+)(['"])/g;
-              const componentReplacement = `$1../../components/modules/${moduleId}/$3$4`;
+              // Rewrite module-local component imports like '../../components/Comp' or '../../../components/Comp'
+              // to point to '.../components/modules/[moduleId]/Comp'
+              const componentImportRegex = /(from\s+['"])((\.\.\/)+components\/)(?!modules\/)([^'"]+['"])/g;
+              const componentReplacement = `$1$2modules/${moduleId}/$4`;
               pageContent = pageContent.replace(componentImportRegex, componentReplacement);
 
-              // Rewrite ../../data/... to ../../lib/modules/[moduleId]/data/...
-              const dataImportRegexPage = /(from\s+['"])(\.\.\/\.\.\/data\/)([^'"]+)(['"])/g;
-              const dataReplacementPage = `$1../../lib/modules/${moduleId}/data/$3$4`;
-              pageContent = pageContent.replace(dataImportRegexPage, dataReplacementPage);
-
-              // Rewrite ../../types/... to ../../lib/modules/[moduleId]/types/...
-              const typesImportRegexPage = /(from\s+['"])(\.\.\/\.\.\/types\/)([^'"]+)(['"])/g;
-              const typesReplacementPage = `$1../../lib/modules/${moduleId}/types/$3$4`;
-              pageContent = pageContent.replace(typesImportRegexPage, typesReplacementPage);
+              // Rewrite module-local data/types imports like '../../data/File' or '../../../types/File'
+              // to point to '.../lib/modules/[moduleId]/data/File' or '.../lib/modules/[moduleId]/types/File'
+              const libImportRegex = /(from\s+['"])((\.\.\/)+)(data|types)\/(?!modules\/)([^'"]+['"])/g;
+              const libReplacement = `$1$2lib/modules/${moduleId}/$4/$5`;
+              pageContent = pageContent.replace(libImportRegex, libReplacement);
               
               if (pageContent !== originalPageContent) {
                 await fs.writeFile(targetPagePath, pageContent, 'utf-8');

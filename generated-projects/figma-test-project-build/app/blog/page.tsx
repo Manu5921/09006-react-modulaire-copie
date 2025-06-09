@@ -3,8 +3,8 @@
 
 import React from 'react';
 // Assuming BlogList is the component previously named PostList
-import PostListComponent from '../../components/BlogList';
-import { getAllPosts, BlogPost } from '../../data/posts'; // Corrected path
+import PostListComponent from '../../../components/modules/blog/BlogList';
+import { getAllPosts, BlogPost } from '../../../lib/modules/blog/data/posts'; // Adjusted path
 
 const BlogIndexPage = () => {
   // In a real app, you might fetch posts in a useEffect or use server components

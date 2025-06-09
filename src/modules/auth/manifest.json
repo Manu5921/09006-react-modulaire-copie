@@ -1,0 +1,20 @@
+{
+  "name": "Authentication",
+  "description": "Handles user login, registration, and session management.",
+  "version": "0.1.0",
+  "dependencies": ["next-auth", "@auth/prisma-adapter"],
+  "pages": ["pages/login.tsx", "pages/register.tsx"],
+  "components": ["components/LoginForm.tsx", "components/RegisterForm.tsx"],
+  "services": ["services/authService.ts"],
+  "hooks": [],
+  "peerDependencies": {
+    "prisma": "^5.0.0"
+  },
+  "configuration": {
+    "envVariables": ["NEXTAUTH_SECRET", "NEXTAUTH_URL"]
+  },
+  "routes": {
+    "/login": "pages/auth/login/page.tsx",
+    "/register": "pages/auth/register/page.tsx"
+  }
+}

@@ -1,0 +1,50 @@
+import React, { useState } from 'react';
+
+const LoginForm = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Implement login logic with authService
+    console.log('Login attempt with:', { email, password });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          // TODO: Apply Figma styles via Tailwind classes
+          className="border p-2 rounded w-full"
+        />
+      </div>
+      <div style={{ marginTop: '1rem' }}>
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          // TODO: Apply Figma styles via Tailwind classes
+          className="border p-2 rounded w-full"
+        />
+      </div>
+      <button 
+        type="submit" 
+        // TODO: Apply Figma styles via Tailwind classes
+        className="mt-4 bg-blue-500 text-white p-2 rounded"
+      >
+        Login
+      </button>
+    </form>
+  );
+};
+
+export default LoginForm;

@@ -1,0 +1,11 @@
+{
+  "name": "Shared Components",
+  "description": "Common UI components and utilities shared across modules.",
+  "version": "0.1.0",
+  "dependencies": [],
+  "pages": [],
+  "components": ["components/Button.tsx", "components/Input.tsx"],
+  "services": [],
+  "hooks": [],
+  "routes": {}
+}

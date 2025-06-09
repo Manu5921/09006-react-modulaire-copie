@@ -1,0 +1,22 @@
+{
+  "id": "faq",
+  "name": "FAQ Module",
+  "version": "1.0.0",
+  "description": "Frequently Asked Questions module with search functionality.",
+  "defaultEnabled": true,
+  "dependencies": [],
+  "routes": [
+    { "path": "/faq", "file": "pages/faq/page.tsx" }
+  ],
+  "components": [
+    "components/FaqItem.tsx",
+    "components/FaqList.tsx",
+    "components/FaqSearch.tsx"
+  ],
+  "data": [
+    "data/faq-data.ts"
+  ],
+  "types": [
+    "types/faq.types.ts"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Contact Form",
+  "description": "Adds a contact form to the website.",
+  "defaultEnabled": false,
+  "version": "0.1.0",
+  "dependencies": [],
+  "pages": ["pages/contact.tsx"],
+  "components": ["components/ContactForm.tsx"],
+  "services": [],
+  "hooks": [],
+  "routes": [
+    { "path": "/contact", "file": "pages/contact/page.tsx" }
+  ]
+}

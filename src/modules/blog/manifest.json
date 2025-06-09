@@ -1,0 +1,16 @@
+{
+  "id": "blog",
+  "name": "Simple Blog",
+  "version": "1.0.0",
+  "description": "A simple blog module with list and detail pages.",
+  "defaultEnabled": true,
+  "components": [
+    "components/BlogList.tsx",
+    "components/BlogPost.tsx"
+  ],
+  "routes": [
+    { "path": "/blog", "file": "pages/blog-index/page.tsx" },
+    { "path": "/blog/[slug]", "file": "pages/blog-detail/[slug]/page.tsx" }
+  ],
+  "dependencies": []
+}

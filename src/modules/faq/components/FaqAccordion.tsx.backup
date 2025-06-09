@@ -1,0 +1,16 @@
+import React from 'react';
+
+const FaqAccordion = () => {
+  return (
+    <div>
+      <h2>FAQ Accordion</h2>
+      {/* Placeholder for FAQ items */}
+      <div>
+        <h3>Question 1?</h3>
+        <p>Answer 1.</p>
+      </div>
+    </div>
+  );
+};
+
+export default FaqAccordion;

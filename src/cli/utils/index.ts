@@ -1,0 +1,1 @@
+export { validateModuleManifest } from './validation';

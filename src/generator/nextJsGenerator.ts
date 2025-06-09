@@ -10,6 +10,23 @@ import { DEFAULT_PROJECT_CONFIG } from '../config/defaults';
 
 // TODO: Define more specific types for project configuration if needed
 
+// Helper function to recursively copy a directory
+async function copyDirectoryRecursive(source: string, target: string) {
+  await ensureDirectoryExists(target);
+  const entries = await fs.readdir(source, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const sourcePath = path.join(source, entry.name);
+    const targetPath = path.join(target, entry.name);
+
+    if (entry.isDirectory()) {
+      await copyDirectoryRecursive(sourcePath, targetPath);
+    } else {
+      await fs.copyFile(sourcePath, targetPath);
+    }
+  }
+}
+
 export async function copyModuleAssets(
   moduleSourceBasePath: string,
   moduleId: string,
@@ -260,9 +277,10 @@ body {
     console.log('Generated app/globals.css');
 
     // --- 6. Generate app/layout.tsx (initial) ---
-    const initialLayoutTsxContent = `
+    let initialLayoutTsxContent = `
 import type { Metadata } from 'next';
 import './globals.css';
+${selectedModules.some(mod => mod.id === 'auth') ? "import { SessionProvider } from 'next-auth/react';" : ""}
 
 export const metadata: Metadata = {
   title: '${projectName}',
@@ -278,7 +296,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {/* Navigation will be injected here */}
-        {children}
+        ${selectedModules.some(mod => mod.id === 'auth') ? "<SessionProvider>{children}</SessionProvider>" : "{children}"}
       </body>
     </html>
   );
@@ -425,6 +443,26 @@ next-env.d.ts
         // Copy data and types files
         await copyModuleDataOrTypes(moduleSourceBasePath, moduleId, projectPath, 'data', manifest.data || []);
         await copyModuleDataOrTypes(moduleSourceBasePath, moduleId, projectPath, 'types', manifest.types || []);
+
+        // Copy static assets from module's assets/ directory
+        const moduleAssetsSourceDir = path.join(moduleSourceBasePath, 'assets');
+        try {
+          await fs.access(moduleAssetsSourceDir); // Check if assets directory exists
+          const moduleAssetsTargetDir = path.join(projectPath, 'public', 'modules', moduleId);
+          await ensureDirectoryExists(moduleAssetsTargetDir);
+          console.log(`    Copying static assets for module ${moduleId} from ${moduleAssetsSourceDir} to ${moduleAssetsTargetDir}`);
+          await copyDirectoryRecursive(moduleAssetsSourceDir, moduleAssetsTargetDir);
+          console.log(`      Copied static assets for module ${moduleId}.`);
+        } catch (error: unknown) {
+          const nodeError = error as NodeJS.ErrnoException;
+          if (nodeError.code === 'ENOENT') {
+            // This is fine, means the module simply has no static assets directory
+            // console.log(`    No static assets directory found for module ${moduleId} at ${moduleAssetsSourceDir}. Skipping.`);
+          } else {
+            console.error(`    Error accessing assets directory for module ${moduleId} at ${moduleAssetsSourceDir}:`, error);
+          }
+        }
+
 
         if (manifest.dependencies && manifest.dependencies.length > 0) {
             const deps: string[] = manifest.dependencies;

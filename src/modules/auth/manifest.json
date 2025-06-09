@@ -1,20 +1,38 @@
 {
   "name": "Authentication",
-  "description": "Handles user login, registration, and session management.",
-  "version": "0.1.0",
-  "dependencies": ["next-auth", "@auth/prisma-adapter"],
-  "pages": ["pages/login.tsx", "pages/register.tsx"],
-  "components": ["components/LoginForm.tsx", "components/RegisterForm.tsx"],
+  "description": "Handles user login, registration, and session management using NextAuth.",
+  "version": "0.2.0",
+  "dependencies": ["next-auth"],
+  "pages": [
+    "pages/login.tsx",
+    "pages/protected-example.tsx",
+    "pages/auth-status.tsx",
+    "pages/api/auth/[...nextauth].ts"
+  ],
+  "components": [
+    "components/LoginButton.tsx",
+    "components/LogoutButton.tsx"
+  ],
   "services": ["services/authService.ts"],
   "hooks": [],
-  "peerDependencies": {
-    "prisma": "^5.0.0"
-  },
   "configuration": {
-    "envVariables": ["NEXTAUTH_SECRET", "NEXTAUTH_URL"]
+    "envVariables": ["NEXTAUTH_SECRET", "NEXTAUTH_URL", "GITHUB_ID", "GITHUB_SECRET"]
   },
-  "routes": {
-    "/login": "pages/auth/login/page.tsx",
-    "/register": "pages/auth/register/page.tsx"
-  }
+  "routes": [
+    {
+      "path": "/login",
+      "file": "pages/login.tsx",
+      "name": "Login"
+    },
+    {
+      "path": "/protected-example",
+      "file": "pages/protected-example.tsx",
+      "name": "Protected Page"
+    },
+    {
+      "path": "/auth-status",
+      "file": "pages/auth-status.tsx",
+      "name": "Auth Status"
+    }
+  ]
 }

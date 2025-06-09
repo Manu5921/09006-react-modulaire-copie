@@ -8,6 +8,9 @@
     "components/BlogList.tsx",
     "components/BlogPost.tsx"
   ],
+  "data": [
+    "data/posts.ts"
+  ],
   "routes": [
     { "path": "/blog", "file": "pages/blog-index/page.tsx" },
     { "path": "/blog/[slug]", "file": "pages/blog-detail/[slug]/page.tsx" }

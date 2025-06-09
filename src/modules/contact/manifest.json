@@ -4,7 +4,7 @@
   "defaultEnabled": false,
   "version": "0.1.0",
   "dependencies": [],
-  "pages": ["pages/contact.tsx"],
+  "pages": [],
   "components": ["components/ContactForm.tsx"],
   "services": [],
   "hooks": [],

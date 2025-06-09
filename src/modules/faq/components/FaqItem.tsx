@@ -36,6 +36,15 @@ export default function FaqItemComponent({ item }: FaqItemProps) {
       {isOpen && (
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg">
           <p className="text-gray-700 leading-relaxed">{item.answer}</p>
+          {item.id === '1' && ( // Only show image for the first FAQ item for testing
+            <div className="mt-4">
+              <img
+                src="/modules/faq/sample-image.png"
+                alt="Sample FAQ Image"
+                className="max-w-xs rounded-md shadow-md"
+              />
+            </div>
+          )}
           <div className="mt-3 flex flex-wrap gap-2">
             {item.tags.map((tag: string) => (
               <span
